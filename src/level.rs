@@ -16,15 +16,19 @@ use crate::{
 };
 
 use bevy::prelude::*;
-use seek_ecs_tilemap::{
+use bevy_ecs_tilemap::{
     map::{
-        TilemapGridSize, TilemapId, TilemapSize, TilemapSpacing, TilesetTexture, TilemapTileSize,
+        TilemapGridSize, TilemapId, TilemapSize, TilemapSpacing, TilemapTexture, TilemapTileSize,
     },
     tiles::{TilePos, TileStorage},
 };
 use std::collections::{HashMap, HashSet};
 
-use seek_ecs_tilemap::TilemapBundle;
+#[cfg(feature = "render")]
+use bevy_ecs_tilemap::TilemapBundle;
+
+#[cfg(not(feature = "render"))]
+use bevy_ecs_tilemap::StandardTilemapBundle as TilemapBundle;
 
 use thiserror::Error;
 
@@ -44,31 +48,31 @@ fn background_image_sprite_sheet_bundle(
 ) -> Result<SpriteSheetBundle, BackgroundImageError> {
     if let Some(background_image) = images.get(background_image_handle) {
         // We need to use a texture atlas to apply the correct crop to the image
-        let tile_size = UVec2::new(
-            background_image.texture_descriptor.size.width,
-            background_image.texture_descriptor.size.height,
+        let tile_size = Vec2::new(
+            background_image.texture_descriptor.size.width as f32,
+            background_image.texture_descriptor.size.height as f32,
         );
         let mut texture_atlas_layout = TextureAtlasLayout::new_empty(tile_size);
 
-        let min = UVec2::new(
-            background_position.crop_rect[0] as u32,
-            background_position.crop_rect[1] as u32,
+        let min = Vec2::new(
+            background_position.crop_rect[0],
+            background_position.crop_rect[1],
         );
 
-        let size = UVec2::new(
-            background_position.crop_rect[2] as u32,
-            background_position.crop_rect[3] as u32,
+        let size = Vec2::new(
+            background_position.crop_rect[2],
+            background_position.crop_rect[3],
         );
 
         let max = min + size;
 
-        let crop_rect = URect { min, max };
+        let crop_rect = Rect { min, max };
 
         let index = texture_atlas_layout.add_texture(crop_rect);
 
         let scale = background_position.scale;
 
-        let scaled_size = size.as_vec2() * scale;
+        let scaled_size = size * scale;
 
         let top_left_translation =
             ldtk_pixel_coords_to_translation(background_position.top_left_px, level_height);
@@ -413,10 +417,10 @@ pub fn spawn_level(
                 };
 
                 let texture = match (tileset_definition, int_grid_image_handle) {
-                    (Some(tileset_definition), _) => TilesetTexture::Single(
+                    (Some(tileset_definition), _) => TilemapTexture::Single(
                         tileset_map.get(&tileset_definition.uid).unwrap().clone(),
                     ),
-                    (None, Some(handle)) => TilesetTexture::Single(handle.clone()),
+                    (None, Some(handle)) => TilemapTexture::Single(handle.clone()),
                     _ => {
                         warn!("unable to render tilemap layer, it has no tileset and no intgrid layers were expected");
                         continue;

@@ -108,14 +108,14 @@ impl LdtkIntCellAppExt for App {
         value: Option<i32>,
     ) -> &mut Self {
         let new_entry = Box::new(PhantomLdtkIntCell::<B>::new());
-        match self.world_mut().get_non_send_resource_mut::<LdtkIntCellMap>() {
+        match self.world.get_non_send_resource_mut::<LdtkIntCellMap>() {
             Some(mut entries) => {
                 entries.insert((layer_identifier, value), new_entry);
             }
             None => {
                 let mut bundle_map = LdtkIntCellMap::new();
                 bundle_map.insert((layer_identifier, value), new_entry);
-                self.world_mut()
+                self.world
                     .insert_non_send_resource::<LdtkIntCellMap>(bundle_map);
             }
         }

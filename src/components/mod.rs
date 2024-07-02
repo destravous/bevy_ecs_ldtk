@@ -24,7 +24,7 @@ use crate::{
     resources::LevelSelection,
 };
 
-use seek_ecs_tilemap::tiles::{TileBundle, TilePos};
+use bevy_ecs_tilemap::tiles::{TileBundle, TilePos};
 
 /// [Component] added to any `IntGrid` tile by default.
 ///

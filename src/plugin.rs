@@ -32,11 +32,11 @@ pub struct LdtkPlugin;
 impl Plugin for LdtkPlugin {
     fn build(&self, mut app: &mut App) {
         // Check if we have added the TileMap plugin
-        if !app.is_plugin_added::<seek_ecs_tilemap::TilemapPlugin>() {
-            app = app.add_plugins(seek_ecs_tilemap::TilemapPlugin);
+        if !app.is_plugin_added::<bevy_ecs_tilemap::TilemapPlugin>() {
+            app = app.add_plugins(bevy_ecs_tilemap::TilemapPlugin);
         }
 
-        app.world_mut()
+        app.world
             .get_resource_mut::<MainScheduleOrder>()
             .expect("expected MainScheduleOrder to exist, try using DefaultPlugins")
             .insert_after(Update, ProcessLdtkApi);

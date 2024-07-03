@@ -27,7 +27,7 @@ derive_more = "0.99.17"
 path-clean = "1.0.1"
 
 [dependencies.seek_ecs_tilemap]
-version = "0.1.2"
+version = "0.1"
 git = "https://github.com/TheSeekerGame/seek_ecs_tilemap"
 
 [dev-dependencies]

@@ -150,7 +150,7 @@ fn insert_spatial_bundle_for_layer_tiles(
             if let Some(tile_entity) = tile_entity {
                 let spatial_bundle = spatial_bundle_for_tiles(tile_pos.into(), grid_size);
 
-                commands.entity(tile_entity).insert(spatial_bundle);
+                // commands.entity(tile_entity).insert(spatial_bundle);
                 commands.entity(tilemap_id.0).add_child(tile_entity);
             }
         }
@@ -650,6 +650,14 @@ pub fn spawn_level(
                             ..default()
                         }
                     };
+
+                    insert_spatial_bundle_for_layer_tiles(
+                        commands,
+                        &tilemap_bundle.storage,
+                        &tilemap_bundle.size,
+                        layer_instance.grid_size,
+                        TilemapId(layer_entity),
+                    );
 
                     let LayerDefinition {
                         tile_pivot_x,

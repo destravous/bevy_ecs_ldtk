@@ -651,14 +651,6 @@ pub fn spawn_level(
                         }
                     };
 
-                    insert_spatial_bundle_for_layer_tiles(
-                        commands,
-                        &tilemap_bundle.storage,
-                        &tilemap_bundle.size,
-                        layer_instance.grid_size,
-                        TilemapId(layer_entity),
-                    );
-
                     let LayerDefinition {
                         tile_pivot_x,
                         tile_pivot_y,

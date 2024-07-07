@@ -26,6 +26,10 @@ use crate::{
 
 use seek_ecs_tilemap::tiles::{TileBundle, TilePos};
 
+/// Used to allow a tile to point to its parent without using bevy's parent child hierarchy (because perf)
+#[derive(Component)]
+pub struct LdtkParent(pub Entity);
+
 /// [Component] added to any `IntGrid` tile by default.
 ///
 /// When loading levels, you can flesh out `IntGrid` entities in your own system by querying for

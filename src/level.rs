@@ -151,7 +151,8 @@ fn insert_spatial_bundle_for_layer_tiles(
                 let spatial_bundle = spatial_bundle_for_tiles(tile_pos.into(), grid_size);
 
                 // commands.entity(tile_entity).insert(spatial_bundle);
-                commands.entity(tilemap_id.0).add_child(tile_entity);
+                commands.entity(tile_entity).insert(LdtkParent(tilemap_id.0));
+                // commands.entity(tilemap_id.0).add_child(tile_entity);
             }
         }
     }
